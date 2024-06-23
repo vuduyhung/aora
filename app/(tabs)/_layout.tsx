@@ -1,25 +1,27 @@
-import { View, Text, Image } from 'react-native'
-import React from 'react'
-import { Tabs, Redirect } from 'expo-router'
+import { View, Text, Image } from 'react-native';
+import React from 'react';
+import { Tabs, Redirect } from 'expo-router';
 
-import { icons } from '../../constants'
+import { icons } from '../../constants';
 
 const TabIcon = ({ icon, color, name, focused }) => {
     return (
-        <View className='flex-1 justify-center items-center gap-2'>
+        <View className="flex-1 justify-center items-center gap-2">
             <Image
                 source={icon}
                 resizeMode="contain"
                 tintColor={color}
-                className='w-6 h-6'
+                className="w-6 h-6"
             />
-            <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`}
-                style={{ color: color }}>
+            <Text
+                className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`}
+                style={{ color: color }}
+            >
                 {name}
             </Text>
         </View>
-    )
-}
+    );
+};
 
 const TabLayout = () => {
     return (
@@ -99,7 +101,7 @@ const TabLayout = () => {
                 />
             </Tabs>
         </>
-    )
-}
+    );
+};
 
-export default TabLayout
+export default TabLayout;
