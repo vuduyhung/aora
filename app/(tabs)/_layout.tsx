@@ -6,12 +6,12 @@ import { icons } from '../../constants';
 
 const TabIcon = ({ icon, color, name, focused }) => {
     return (
-        <View className="flex-1 justify-center items-center gap-2">
+        <View className='flex-1 items-center justify-center gap-2'>
             <Image
                 source={icon}
-                resizeMode="contain"
+                resizeMode='contain'
                 tintColor={color}
-                className="w-6 h-6"
+                className='h-6 w-6'
             />
             <Text
                 className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`}
@@ -40,7 +40,7 @@ const TabLayout = () => {
                 }}
             >
                 <Tabs.Screen
-                    name="home"
+                    name='home'
                     options={{
                         title: 'Home',
                         headerShown: false,
@@ -48,14 +48,14 @@ const TabLayout = () => {
                             <TabIcon
                                 icon={icons.home}
                                 color={color}
-                                name="Home"
+                                name='Home'
                                 focused={focused}
                             />
                         )
                     }}
                 />
                 <Tabs.Screen
-                    name="bookmark"
+                    name='bookmark'
                     options={{
                         title: 'Bookmark',
                         headerShown: false,
@@ -63,14 +63,14 @@ const TabLayout = () => {
                             <TabIcon
                                 icon={icons.bookmark}
                                 color={color}
-                                name="Bookmark"
+                                name='Bookmark'
                                 focused={focused}
                             />
                         )
                     }}
                 />
                 <Tabs.Screen
-                    name="create"
+                    name='create'
                     options={{
                         title: 'Create',
                         headerShown: false,
@@ -78,14 +78,14 @@ const TabLayout = () => {
                             <TabIcon
                                 icon={icons.plus}
                                 color={color}
-                                name="Create"
+                                name='Create'
                                 focused={focused}
                             />
                         )
                     }}
                 />
                 <Tabs.Screen
-                    name="profile"
+                    name='profile'
                     options={{
                         title: 'Profile',
                         headerShown: false,
@@ -93,7 +93,7 @@ const TabLayout = () => {
                             <TabIcon
                                 icon={icons.profile}
                                 color={color}
-                                name="Profile"
+                                name='Profile'
                                 focused={focused}
                             />
                         )

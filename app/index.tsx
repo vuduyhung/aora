@@ -10,50 +10,50 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 export default function Index() {
     const { isLoading, setIsLogged } = useGlobalContext();
 
-    if (!isLoading && setIsLogged) return <Redirect href="/home" />;
+    if (!isLoading && setIsLogged) return <Redirect href='/home' />;
 
     return (
-        <SafeAreaView className="bg-primary h-full">
+        <SafeAreaView className='h-full bg-primary'>
             <ScrollView contentContainerStyle={{ height: '100%' }}>
-                <View className="w-full flex justify-center items-center min-h-[85vh] px-4">
+                <View className='flex min-h-[85vh] w-full items-center justify-center px-4'>
                     <Image
                         source={images.logo}
-                        className="w-[130px] h-[84px]"
-                        resizeMode="contain"
+                        className='h-[84px] w-[130px]'
+                        resizeMode='contain'
                     />
 
                     <Image
                         source={images.cards}
-                        className="max-w-[380px] h-[300px] w-full"
-                        resizeMode="contain"
+                        className='h-[300px] w-full max-w-[380px]'
+                        resizeMode='contain'
                     />
 
-                    <View className="mt-5 relative">
-                        <Text className="text-3xl text-white font-bold text-center">
+                    <View className='relative mt-5'>
+                        <Text className='text-center text-3xl font-bold text-white'>
                             Discover Endless {'\n'} Possibilities with {''}
-                            <Text className="text-secondary-200">Aora</Text>
+                            <Text className='text-secondary-200'>Aora</Text>
                         </Text>
                         <Image
                             source={images.path}
-                            className="w-[136px] h-[15px] absolute -bottom-2 -right-8"
-                            resizeMode="contain"
+                            className='absolute -bottom-2 -right-8 h-[15px] w-[136px]'
+                            resizeMode='contain'
                         />
                     </View>
 
-                    <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
+                    <Text className='mt-7 text-center font-pregular text-sm text-gray-100'>
                         Where creativity meets innovation: embark on a journey
                         of limitless exploration with Aora
                     </Text>
 
                     <CustomButton
-                        title="Continue with Email"
+                        title='Continue with Email'
                         handlePress={() => router.push('/sign-in')}
-                        containerStyles="w-full mt-7"
+                        containerStyles='w-full mt-7'
                     />
                 </View>
             </ScrollView>
 
-            <StatusBar backgroundColor="#161622" style="dark" />
+            <StatusBar backgroundColor='#161622' style='dark' />
         </SafeAreaView>
     );
 }

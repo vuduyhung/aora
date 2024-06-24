@@ -37,50 +37,50 @@ const SignIn = () => {
     };
 
     return (
-        <SafeAreaView className="bg-primary h-full">
+        <SafeAreaView className='h-full bg-primary'>
             <ScrollView>
-                <View className="w-full justify-center min-h-[83vh] px-4 my-6">
+                <View className='my-6 min-h-[83vh] w-full justify-center px-4'>
                     <Image
                         source={images.logo}
-                        resizeMode="contain"
-                        className="w-[115px] h-[35px]"
+                        resizeMode='contain'
+                        className='h-[35px] w-[115px]'
                     />
 
-                    <Text className="text-2xl text-white text-semibold mt-10 font-psemibold">
+                    <Text className='text-semibold mt-10 font-psemibold text-2xl text-white'>
                         Log in to Aora
                     </Text>
 
                     <FormField
-                        title="Email"
+                        title='Email'
                         value={form.email}
                         handleChangeText={(e) => setForm({ ...form, email: e })}
-                        otherStyles="mt-7"
-                        keyboardType="email-address"
+                        otherStyles='mt-7'
+                        keyboardType='email-address'
                     />
 
                     <FormField
-                        title="Password"
+                        title='Password'
                         value={form.password}
                         handleChangeText={(e: string) =>
                             setForm({ ...form, password: e })
                         }
-                        otherStyles="mt-7"
+                        otherStyles='mt-7'
                     />
 
                     <CustomButton
-                        title="Sign In"
+                        title='Sign In'
                         handlePress={submit}
-                        containerStyles="mt-7"
+                        containerStyles='mt-7'
                         isLoading={isSubmitting}
                     />
 
-                    <View className="justify-center pt-5 flex-row gap-2">
-                        <Text className="text-lg text-gray-100 font-pregular">
+                    <View className='flex-row justify-center gap-2 pt-5'>
+                        <Text className='font-pregular text-lg text-gray-100'>
                             Don't have an account?
                         </Text>
                         <Link
-                            href="/sign-up"
-                            className="text-lg font-psemibold text-secondary"
+                            href='/sign-up'
+                            className='font-psemibold text-lg text-secondary'
                         >
                             Sign Up
                         </Link>
