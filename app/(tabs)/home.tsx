@@ -15,51 +15,26 @@ import SearchInput from '@/components/SearchInput';
 import Trending from '@/components/Trending';
 import EmptyState from '@/components/EmptyState';
 import { getAllPosts } from '@/lib/appwrite';
+import useAppwrite from '@/hooks/useAppwrite';
+import VideoCard from '@/components/VideoCard';
 
 const Home = () => {
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const { data: posts, isLoading, refetch } = useAppwrite(getAllPosts);
 
     const [refreshing, setRefreshing] = useState(false);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            try {
-                const response = await getAllPosts();
-
-                setData(response);
-            } catch (error) {
-                Alert.alert('Error', error.message);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    const onRefresh = () => {
+    const onRefresh = async () => {
         setRefreshing(true);
-
+        await refetch();
         setRefreshing(false);
     };
 
     return (
         <SafeAreaView className='h-full bg-primary'>
             <FlatList
-                data={[
-                    { id: '1', title: 'Title 1', description: 'Description 1' },
-                    { id: '2', title: 'Title 2', description: 'Description 2' }
-                ]}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <View>
-                        <Text className='text-3xl text-white'>
-                            {item.title}
-                        </Text>
-                    </View>
-                )}
+                data={posts?.documents ?? []}
+                keyExtractor={(item) => item.$id}
+                renderItem={({ item }) => <VideoCard video={item} />}
                 ListHeaderComponent={() => (
                     <View className='my-6 space-y-6 px-4'>
                         <View className='mb-6 flex-row items-start justify-between'>
