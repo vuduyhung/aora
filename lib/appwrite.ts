@@ -3,8 +3,10 @@ import {
     Avatars,
     Client,
     Databases,
+    Storage,
     ID,
-    Query
+    Query,
+    ImageGravity
 } from 'react-native-appwrite';
 
 export const config = {
@@ -28,6 +30,7 @@ client
 const account = new Account(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
+const storage = new Storage(client);
 
 // Register User
 export const createUser = async ({
@@ -173,6 +176,81 @@ export const getUserPosts = async (userId) => {
         );
 
         return posts.documents;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getFilePreview = async (fileId, type) => {
+    let fileUrl;
+
+    try {
+        if (type === 'video') {
+            fileUrl = storage.getFileView(config.storageId, fileId);
+        } else if (type === 'thumbnail') {
+            fileUrl = storage.getFilePreview(
+                config.storageId,
+                fileId,
+                2000,
+                2000,
+                ImageGravity.Top,
+                100
+            );
+        } else {
+            throw new Error('Invalid file type');
+        }
+
+        if (!fileUrl) throw new Error('No file found');
+
+        return fileUrl;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const uploadFile = async (file, type) => {
+    if (!file) throw new Error('No file provided');
+
+    const { mimeType, ...rest } = file;
+    const asset = { type: mimeType, ...rest };
+
+    try {
+        const uploadedFile = await storage.createFile(
+            config.storageId,
+            ID.unique(),
+            asset
+        );
+
+        const fileUrl = await getFilePreview(uploadedFile.$id, type);
+
+        return fileUrl;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const createVideo = async (formData) => {
+    try {
+        // upload video and thumbnail to appwrite storage
+        const [videoUrl, thumbnailUrl] = await Promise.all([
+            uploadFile(formData.video, 'video'),
+            uploadFile(formData.thumbnail, 'thumbnail')
+        ]);
+
+        const newPost = await databases.createDocument(
+            config.databaseId,
+            config.videoCollectionId,
+            ID.unique(),
+            {
+                title: formData.title,
+                video: videoUrl,
+                thumbnail: thumbnailUrl,
+                promt: formData.prompt,
+                creator: formData.userId
+            }
+        );
+
+        return newPost;
     } catch (error) {
         throw error;
     }
