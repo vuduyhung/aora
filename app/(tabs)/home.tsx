@@ -16,8 +16,10 @@ import EmptyState from '@/components/EmptyState';
 import { getAllPosts, getLatestPosts } from '@/lib/appwrite';
 import useAppwrite from '@/hooks/useAppwrite';
 import VideoCard from '@/components/VideoCard';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const Home = () => {
+    const { user, setUser, setIsLogged } = useGlobalContext();
     const { data: posts, isLoading, refetch } = useAppwrite(getAllPosts);
     const { data: latestPosts } = useAppwrite(getLatestPosts);
 
@@ -43,7 +45,7 @@ const Home = () => {
                                     Welcome back
                                 </Text>
                                 <Text className='font-psemibold text-2xl text-white'>
-                                    Aora
+                                    {user?.username ?? 'User'}
                                 </Text>
                             </View>
 

@@ -8,12 +8,12 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 // import 'react-native-url-polyfill/auto'; // appwrite
 
 export default function Index() {
-    const { isLoading, setIsLogged } = useGlobalContext();
+    const { isLoading, isLogged } = useGlobalContext();
 
     // TODO: show loading spinner
     // if (isLoading) return <Text>Loading...</Text>;
 
-    if (!isLoading && setIsLogged) return <Redirect href='/home' />;
+    if (!isLoading && isLogged) return <Redirect href='/home' />;
 
     return (
         <SafeAreaView className='h-full bg-primary'>
