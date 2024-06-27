@@ -13,6 +13,7 @@ import { ResizeMode, Video } from 'expo-av';
 import { icons } from '@/constants';
 import CustomButton from '@/components/CustomButton';
 import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
 import { createVideo } from '@/lib/appwrite';
 import { router } from 'expo-router';
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -27,13 +28,27 @@ const Create = () => {
         prompt: ''
     });
     const [uploading, setUploading] = useState(false);
+    // const [status, requestPermission] = ImagePicker.useCameraPermissions();
+    // const [status, requestPermission] =
+    //     ImagePicker.useMediaLibraryPermissions();
 
     const openPicker = async (selectType: string) => {
-        const result = await DocumentPicker.getDocumentAsync({
-            type:
+        // const result = await DocumentPicker.getDocumentAsync({
+        //     type:
+        //         selectType === 'video'
+        //             ? ['video/mp4', 'video/gif', 'video/mov']
+        //             : ['image/png', 'image/jpeg', 'image/jpg']
+        // });
+
+        // No permissions request is necessary for launching the image library
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes:
                 selectType === 'video'
-                    ? ['video/mp4', 'video/gif', 'video/mov']
-                    : ['image/png', 'image/jpeg', 'image/jpg']
+                    ? ImagePicker.MediaTypeOptions.Videos
+                    : ImagePicker.MediaTypeOptions.Images,
+            // allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1
         });
 
         if (!result.canceled) {

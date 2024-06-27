@@ -130,7 +130,8 @@ export const getAllPosts = async () => {
     try {
         const posts = await databases.listDocuments(
             config.databaseId,
-            config.videoCollectionId
+            config.videoCollectionId,
+            [Query.orderDesc('$createdAt')]
         );
 
         return posts.documents;
@@ -211,8 +212,15 @@ export const getFilePreview = async (fileId, type) => {
 export const uploadFile = async (file, type) => {
     if (!file) throw new Error('No file provided');
 
-    const { mimeType, ...rest } = file;
-    const asset = { type: mimeType, ...rest };
+    // const { mimeType, ...rest } = file;
+    // const asset = { type: mimeType, ...rest };
+
+    const asset = {
+        name: file.fileName,
+        type: file.mimeType,
+        size: file.fileSize,
+        uri: file.uri
+    };
 
     try {
         const uploadedFile = await storage.createFile(
