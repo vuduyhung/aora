@@ -6,11 +6,10 @@ import {
     RefreshControl,
     Alert
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { images } from '@/constants';
-import Search from '../search/[query]';
 import SearchInput from '@/components/SearchInput';
 import Trending from '@/components/Trending';
 import EmptyState from '@/components/EmptyState';
@@ -57,12 +56,7 @@ const Home = () => {
                             </View>
                         </View>
 
-                        <SearchInput
-                            title=''
-                            value=''
-                            placeholder='Search for a video topic'
-                            handleChangeText={() => {}}
-                        />
+                        <SearchInput />
 
                         <View className='w-full flex-1 pb-8 pt-5'>
                             <Text className='mb-3 font-pregular text-lg text-gray-100'>
