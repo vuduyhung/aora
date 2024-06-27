@@ -14,12 +14,13 @@ import Search from '../search/[query]';
 import SearchInput from '@/components/SearchInput';
 import Trending from '@/components/Trending';
 import EmptyState from '@/components/EmptyState';
-import { getAllPosts } from '@/lib/appwrite';
+import { getAllPosts, getLatestPosts } from '@/lib/appwrite';
 import useAppwrite from '@/hooks/useAppwrite';
 import VideoCard from '@/components/VideoCard';
 
 const Home = () => {
     const { data: posts, isLoading, refetch } = useAppwrite(getAllPosts);
+    const { data: latestPosts } = useAppwrite(getLatestPosts);
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -32,7 +33,7 @@ const Home = () => {
     return (
         <SafeAreaView className='h-full bg-primary'>
             <FlatList
-                data={posts?.documents ?? []}
+                data={posts ?? []}
                 keyExtractor={(item) => item.$id}
                 renderItem={({ item }) => <VideoCard video={item} />}
                 ListHeaderComponent={() => (
@@ -68,9 +69,7 @@ const Home = () => {
                                 Latest Videos
                             </Text>
 
-                            <Trending
-                                posts={[{ id: 1 }, { id: 2 }, { id: 3 }] ?? []}
-                            />
+                            <Trending posts={latestPosts ?? []} />
                         </View>
                     </View>
                 )}

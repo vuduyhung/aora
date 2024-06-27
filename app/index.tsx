@@ -10,6 +10,9 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 export default function Index() {
     const { isLoading, setIsLogged } = useGlobalContext();
 
+    // TODO: show loading spinner
+    // if (isLoading) return <Text>Loading...</Text>;
+
     if (!isLoading && setIsLogged) return <Redirect href='/home' />;
 
     return (

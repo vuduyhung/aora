@@ -120,7 +120,21 @@ export const getAllPosts = async () => {
             config.videoCollectionId
         );
 
-        return posts;
+        return posts.documents;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getLatestPosts = async () => {
+    try {
+        const posts = await databases.listDocuments(
+            config.databaseId,
+            config.videoCollectionId,
+            [Query.orderDesc('$createdAt'), Query.limit(7)]
+        );
+
+        return posts.documents;
     } catch (error) {
         throw error;
     }
