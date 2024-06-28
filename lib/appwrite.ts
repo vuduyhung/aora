@@ -215,6 +215,9 @@ export const updatePostLikes = async (postId, userId, liked) => {
 
 export const getLikedPosts = async (query, userId) => {
     try {
+        // if (!query) query = '';
+        // console.log(`query: ${query}, userId: ${userId}`);
+
         const posts = await databases.listDocuments(
             config.databaseId,
             config.videoCollectionId,
@@ -226,6 +229,7 @@ export const getLikedPosts = async (query, userId) => {
                 e.likedUsers &&
                 e.likedUsers.filter((e) => e.$id === userId).length > 0
         );
+        // console.log('result: ', result);
 
         return result;
     } catch (error) {

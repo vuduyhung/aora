@@ -17,21 +17,48 @@ import useAppwrite from '@/hooks/useAppwrite';
 import VideoCard from '@/components/VideoCard';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { getLikedPosts } from '@/lib/appwrite';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useSegments } from 'expo-router';
 import FilterInput from '@/components/FilterInput';
+import EventBus from '@/lib/EventBus';
+import { eventbus } from '@/constants';
 
 const Bookmark = () => {
+    const segments = useSegments();
     const { user, setUser, setIsLogged } = useGlobalContext();
-    const { query } = useLocalSearchParams();
-    const {
-        data: bookmarkedPosts,
-        isLoading,
-        refetch
-    } = useAppwrite(() => getLikedPosts(query, user.$id));
+    // const { query } = useLocalSearchParams();
+
+    // const {
+    //     data: bookmarkedPosts,
+    //     isLoading,
+    //     refetch
+    // } = useAppwrite(() => getLikedPosts(query, user.$id));
+
+    // useEffect(() => {
+    //     console.log('query change: ', query);
+    //     _initData();
+    // }, [query]);
+
+    const [query, setQuery] = useState('');
+    const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
 
     useEffect(() => {
-        refetch();
-    }, [query]);
+        const fn = async (query: string) => {
+            setQuery(query);
+            // const data = await getLikedPosts(query, user.$id);
+            // setBookmarkedPosts(data);
+            _initData(query);
+        };
+
+        _initData(query);
+
+        const subcriptor = EventBus.subscribe(eventbus.FILTER_BOOKMARK, fn);
+        return () => subcriptor.unSubscribe();
+    }, []);
+
+    const _initData = async (query) => {
+        const data = await getLikedPosts(query, user.$id);
+        setBookmarkedPosts(data);
+    };
 
     return (
         <SafeAreaView className='h-full bg-primary'>
@@ -52,8 +79,8 @@ const Bookmark = () => {
                 )}
                 ListEmptyComponent={() => (
                     <EmptyState
-                        title='No videos found'
-                        subtitle='Be the first one upload a video'
+                        title='No bookmark videos found'
+                        subtitle='Let bookmark videos or be the first one upload a video'
                     />
                 )}
             />

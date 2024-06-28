@@ -30,7 +30,10 @@ const VideoCard = ({
     const { user } = useGlobalContext();
     const [play, setPlay] = useState(false);
     const [liked, setLiked] = useState(
-        user.$id && likedUsers.filter((e) => e.$id === user.$id).length > 0
+        user &&
+            user.$id &&
+            likedUsers &&
+            likedUsers.filter((e) => e.$id === user.$id).length > 0
             ? true
             : false
     );

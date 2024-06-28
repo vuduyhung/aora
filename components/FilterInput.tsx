@@ -10,6 +10,8 @@ import {
 
 import { icons } from '@/constants';
 import { router, usePathname } from 'expo-router';
+import EventBus from '@/lib/EventBus';
+import { eventbus } from '@/constants';
 
 const FilterInput = ({ initialQuery }) => {
     const pathname = usePathname();
@@ -34,7 +36,8 @@ const FilterInput = ({ initialQuery }) => {
                     //     );
                     // }
 
-                    router.setParams({ query });
+                    // router.setParams({ query });
+                    EventBus.publish(eventbus.FILTER_BOOKMARK, query);
 
                     // if (pathname.startsWith('/search')) {
                     //     router.setParams({ query });
