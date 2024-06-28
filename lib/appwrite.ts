@@ -182,6 +182,57 @@ export const getUserPosts = async (userId) => {
     }
 };
 
+export const updatePostLikes = async (postId, userId, liked) => {
+    try {
+        // console.log(`postId: ${postId}, userId: ${userId}, liked: ${liked}`);
+        const post = await databases.getDocument(
+            config.databaseId,
+            config.videoCollectionId,
+            postId
+        );
+
+        let newlikedUsers = post.likedUsers || [];
+        if (liked) {
+            newlikedUsers.push(userId);
+        } else {
+            newlikedUsers = newlikedUsers.filter((e) => e.$id !== userId);
+        }
+
+        const result = await databases.updateDocument(
+            config.databaseId,
+            config.videoCollectionId,
+            postId,
+            {
+                likedUsers: newlikedUsers
+            }
+        );
+
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getLikedPosts = async (query, userId) => {
+    try {
+        const posts = await databases.listDocuments(
+            config.databaseId,
+            config.videoCollectionId,
+            query ? [Query.search('title', query)] : []
+        );
+
+        const result = posts.documents.filter(
+            (e) =>
+                e.likedUsers &&
+                e.likedUsers.filter((e) => e.$id === userId).length > 0
+        );
+
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const getFilePreview = async (fileId, type) => {
     let fileUrl;
 

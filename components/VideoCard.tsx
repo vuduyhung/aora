@@ -2,16 +2,21 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { icons } from '@/constants';
 import { ResizeMode, Video } from 'expo-av';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import { updatePostLikes } from '@/lib/appwrite';
 
 const VideoCard = ({
     video: {
+        $id,
         title,
         thumbnail,
         video,
-        creator: { username, avatar }
+        creator: { username, avatar },
+        likedUsers
     }
 }: {
     video: {
+        $id: string;
         title: string;
         thumbnail: string;
         video: string;
@@ -19,9 +24,24 @@ const VideoCard = ({
             username: string;
             avatar: string;
         };
+        likedUsers: [];
     };
 }) => {
+    const { user } = useGlobalContext();
     const [play, setPlay] = useState(false);
+    const [liked, setLiked] = useState(
+        user.$id && likedUsers.filter((e) => e.$id === user.$id).length > 0
+            ? true
+            : false
+    );
+
+    // TODO: need add an Event Bus to handle update likes event, make sure another components can receive event update
+    const toggleLike = () => {
+        // Implement like/unlike functionality here
+        setLiked((prev) => !prev);
+
+        updatePostLikes($id, user.$id, !liked);
+    };
 
     return (
         <View className='mb-14 flex-col items-center px-4'>
@@ -48,7 +68,19 @@ const VideoCard = ({
                     </View>
                 </View>
 
-                <View className='pt-2'>
+                <View className='flex-row space-x-3 pt-2'>
+                    <TouchableOpacity
+                        className='items-center justify-center'
+                        onPress={toggleLike}
+                    >
+                        <Image
+                            source={icons.bookmark}
+                            tintColor={liked ? '#ffa001' : '#cdcde0'}
+                            className='h-5 w-5'
+                            resizeMode='contain'
+                        />
+                    </TouchableOpacity>
+
                     <Image
                         source={icons.menu}
                         className='h-5 w-5'
